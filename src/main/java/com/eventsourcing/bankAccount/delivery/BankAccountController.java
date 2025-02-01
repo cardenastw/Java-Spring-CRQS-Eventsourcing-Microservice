@@ -6,6 +6,7 @@ import com.eventsourcing.bankAccount.dto.*;
 import com.eventsourcing.bankAccount.queries.BankAccountQueryService;
 import com.eventsourcing.bankAccount.queries.FindAllOrderByBalance;
 import com.eventsourcing.bankAccount.queries.GetBankAccountByIDQuery;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController

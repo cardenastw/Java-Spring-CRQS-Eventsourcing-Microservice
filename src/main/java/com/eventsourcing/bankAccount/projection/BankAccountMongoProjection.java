@@ -27,6 +27,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class BankAccountMongoProjection implements Projection {
             ack.acknowledge();
             log.info("ack events: {}", Arrays.toString(events));
         } catch (Exception ex) {
-            ack.nack(100);
+            ack.nack(Duration.ofMillis(100));
             log.error("(BankAccountMongoProjection) topic: {}, offset: {}, partition: {}, timestamp: {}", meta.topic(), meta.offset(), meta.partition(), meta.timestamp(), ex);
         }
     }
