@@ -10,7 +10,12 @@ import com.eventsourcing.es.AggregateRoot;
 import com.eventsourcing.es.Event;
 import com.eventsourcing.es.SerializerUtils;
 import com.eventsourcing.es.exceptions.InvalidEventTypeException;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -20,6 +25,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@ToString(callSuper = true)
 public class BankAccountAggregate extends AggregateRoot {
 
 
@@ -107,20 +113,5 @@ public class BankAccountAggregate extends AggregateRoot {
         final byte[] dataBytes = SerializerUtils.serializeToJsonBytes(data);
         final var event = this.createEvent(BalanceDepositedEvent.BALANCE_DEPOSITED, dataBytes, null);
         apply(event);
-    }
-
-
-    @Override
-    public String toString() {
-        return "BankAccountAggregate{" +
-                "email='" + email + '\'' +
-                ", userName='" + userName + '\'' +
-                ", address='" + address + '\'' +
-                ", balance=" + balance +
-                ", id='" + id + '\'' +
-                ", type='" + type + '\'' +
-                ", version=" + version +
-                ", changes=" + changes.size() +
-                '}';
     }
 }

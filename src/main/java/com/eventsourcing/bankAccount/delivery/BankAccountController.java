@@ -6,6 +6,7 @@ import com.eventsourcing.bankAccount.dto.*;
 import com.eventsourcing.bankAccount.queries.BankAccountQueryService;
 import com.eventsourcing.bankAccount.queries.FindAllOrderByBalance;
 import com.eventsourcing.bankAccount.queries.GetBankAccountByIDQuery;
+import de.huxhorn.sulky.ulid.ULID;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class BankAccountController {
 
     private final BankAccountCommandService commandService;
     private final BankAccountQueryService queryService;
+    private final ULID idGen;
 
     @GetMapping("{aggregateId}")
     public ResponseEntity<BankAccountResponseDTO> getBankAccount(@PathVariable String aggregateId) {
@@ -34,7 +36,7 @@ public class BankAccountController {
 
     @PostMapping
     public ResponseEntity<String> createBankAccount(@Valid @RequestBody CreateBankAccountRequestDTO dto) {
-        final var aggregateID = UUID.randomUUID().toString();
+        final var aggregateID = idGen.nextValue().toString();
         final var id = commandService.handle(new CreateBankAccountCommand(aggregateID, dto.email(), dto.userName(), dto.address()));
         log.info("Created bank account id: {}", id);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);

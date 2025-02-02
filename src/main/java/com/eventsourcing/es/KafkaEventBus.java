@@ -26,9 +26,10 @@ public class KafkaEventBus implements EventBus {
 
     @Override
     @NewSpan
-    public void publish(@SpanTag("events") List<Event> events) {
+    public void publish(@SpanTag("partitionId") String partitionId,
+                        @SpanTag("events") List<Event> events) {
         final byte[] eventsBytes = SerializerUtils.serializeToJsonBytes(events.toArray(new Event[]{}));
-        final ProducerRecord<String, byte[]> record = new ProducerRecord<>(bankAccountTopicName, eventsBytes);
+        final ProducerRecord<String, byte[]> record = new ProducerRecord<>(bankAccountTopicName, partitionId, eventsBytes);
 
         try {
             kafkaTemplate.send(record).get(sendTimeout, TimeUnit.MILLISECONDS);
